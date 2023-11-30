@@ -9,7 +9,7 @@ fun main() {
     var num2 = 0
     var op = ""
     var mod = 0.0
-
+ 
     while(true) {
         try {
             when (clear) {
