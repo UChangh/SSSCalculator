@@ -5,44 +5,43 @@ import java.lang.NumberFormatException
 fun main() {
     var ans = 0.0
     var clear = 0
-    var num1 = 0
-    var num2 = 0
-    var op = ""
-    var mod = 0.0
+    var num = listOf<String>()
+
+    val add = AddOperation()
+    val sub = SubstractOperation()
+    val mul = MultiplyOperation()
+    val div = DivideOperation()
+    val mod = ModOperation()
 
     while(true) {
         try {
             when (clear) {
                 0 -> {
-                    mod = 0.0
-                    println("숫자를 입력해 주세요")
-                    num1 = readln().toInt()
+                    println("수식을 입력해 주세요. 형식 : 1 + 1")
+                    num = readln().split(" ")
                 }
                 1 -> {
-                    mod = ans%1.0
-                    num1 = ans.toInt()
+                    println("수식을 완성해 주세요. $ans + 1")
+                    num = (num[0] + " " + readln()).split(" ")
                 }
             }
-
-            println("연산자를 입력해 주세요")
-            op = readln()
-            println("숫자를 입력해 주세요")
-            num2 = readln().toInt()
-
-            ans = when (op) {
-                "+" -> AddOperation().ans(num1 + mod,num2)
-                "-" -> SubstractOperation().ans(num1 + mod, num2)
-                "*" -> MultiplyOperation().ans(num1 + mod, num2)
-                "/" -> DivideOperation().ans(num1 + mod, num2)
-                "%" -> ModOperation().ans(num1 + mod, num2)
-                else -> break
+            ans = when {
+                num[1] == "/" && num[2].toDouble() == 0.0 -> {
+                    println("0으로 나눌 수 없습니다.")
+                    0.0
+                }
+                else -> when (num[1]) {
+                    "+" -> add.ans(num[0].toDouble(), num[2].toDouble())
+                    "-" -> sub.ans(num[0].toDouble(), num[2].toDouble())
+                    "*" -> mul.ans(num[0].toDouble(), num[2].toDouble())
+                    "/" -> div.ans(num[0].toDouble(), num[2].toDouble())
+                    "%" -> mod.ans(num[0].toDouble(), num[2].toDouble())
+                    else -> break
+                }
             }
             println(String.format("%.3f",ans))
             println("추가 계산 : 1, 초기화 : 0")
             clear = readln().toInt()
-        } catch (e:ArithmeticException) {
-            println("Error! : Divide by Zero")
-            break
         } catch (e:NumberFormatException) {
             println("Error! : 숫자를 다시 입력해 주세요")
             break
